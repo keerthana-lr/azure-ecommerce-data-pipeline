@@ -1,0 +1,108 @@
+{
+    "name": "pipeline1",
+    "properties": {
+        "activities": [
+            {
+                "name": "ForEach1",
+                "type": "ForEach",
+                "dependsOn": [],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@pipeline().parameters.file_list",
+                        "type": "Expression"
+                    },
+                    "activities": [
+                        {
+                            "name": "Copy data2",
+                            "type": "Copy",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "source": {
+                                    "type": "DelimitedTextSource",
+                                    "storeSettings": {
+                                        "type": "HttpReadSettings",
+                                        "requestMethod": "GET"
+                                    },
+                                    "formatSettings": {
+                                        "type": "DelimitedTextReadSettings"
+                                    }
+                                },
+                                "sink": {
+                                    "type": "DelimitedTextSink",
+                                    "storeSettings": {
+                                        "type": "AzureBlobFSWriteSettings"
+                                    },
+                                    "formatSettings": {
+                                        "type": "DelimitedTextWriteSettings",
+                                        "quoteAllText": true,
+                                        "fileExtension": ".txt"
+                                    }
+                                },
+                                "enableStaging": false,
+                                "translator": {
+                                    "type": "TabularTranslator",
+                                    "typeConversion": true,
+                                    "typeConversionSettings": {
+                                        "allowDataTruncation": true,
+                                        "treatBooleanAsNumber": false
+                                    }
+                                }
+                            },
+                            "inputs": [
+                                {
+                                    "referenceName": "ds_http_orders",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "file_name": {
+                                            "value": "@item()",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ],
+                            "outputs": [
+                                {
+                                    "referenceName": "ds_bronze_orders",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "file_name": {
+                                            "value": "@item()",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "parameters": {
+            "file_list": {
+                "type": "array",
+                "defaultValue": [
+                    "olist_orders_dataset.csv",
+                    "olist_customers_dataset.csv",
+                    "olist_order_payments_dataset.csv",
+                    "olist_products_dataset.csv",
+                    "olist_sellers_dataset.csv",
+                    "olist_order_items_dataset.csv",
+                    "olist_order_reviews_dataset.csv",
+                    "product_category_name_translation.csv"
+                ]
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2026-06-20T06:52:30Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
