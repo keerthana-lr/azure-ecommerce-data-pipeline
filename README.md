@@ -57,6 +57,9 @@ GitHub (raw CSV)
 - Connected directly to the Synapse Serverless SQL endpoint.
 - Dashboard covers revenue trends, top-performing product categories, customer order behavior, and a dedicated data quality view.
 
+<img width="893" height="501" alt="image" src="https://github.com/user-attachments/assets/1f6ef93e-b1bb-4fb3-94a6-65e3aaed879e" />
+
+
 ![Power BI Dashboard](powerbi/dashboard_screenshot.png)
 
 ## Repository Structure
